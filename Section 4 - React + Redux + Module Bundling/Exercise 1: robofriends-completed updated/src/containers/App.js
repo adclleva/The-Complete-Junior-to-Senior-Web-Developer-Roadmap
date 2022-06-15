@@ -10,6 +10,7 @@ class App extends Component {
     this.state = {
       robots: [],
       searchfield: "",
+      hasError: false,
     };
   }
 
@@ -18,6 +19,10 @@ class App extends Component {
       .then((response) => response.json())
       .then((users) => {
         this.setState({ robots: users });
+      })
+      .catch((error) => {
+        console.log("error has occured");
+        this.setState({ hasError: true });
       });
   }
 
@@ -30,6 +35,11 @@ class App extends Component {
     const filteredRobots = robots.filter((robot) => {
       return robot.name.toLowerCase().includes(searchfield.toLowerCase());
     });
+    console.log("this.state.hasError", this.state.hasError);
+    if (this.state.hasError) {
+      return <h1 className="f1">Error has occured!</h1>;
+    }
+
     return !robots.length ? (
       <h1>Loading</h1>
     ) : (
